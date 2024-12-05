@@ -23,14 +23,13 @@ type Categorias = {
         abierto: Registro[];
         notificado: Registro[];
         descartado: Registro[];
+        rescatado: Registro[];
     };
 };
 
 export default function Descartado() {
     // Estado para gestionar qué categoría está abierta
     const [openCategory, setOpenCategory] = useState<Categoria | null>(null);
-
-    // Función para manejar el clic en las categorías
     const [isOpen, setIsOpen] = useState(false);
 
     // Función para manejar el clic en las categorías
@@ -50,24 +49,22 @@ export default function Descartado() {
                         <li
                             key={categoryTyped}
                             // Al hacer clic, se alterna la categoría abierta
-                            className="p-3 cursor-pointer border-2 border-gray-200 hover:bg-gray-100"
+                            onClick={() => toggleMenu(categoryTyped)}
+                            className={`${openCategory === categoryTyped ? "" : "hover:bg-gray-100  border-b-2"} p-3 `}
                         >
                             <div className="flex items-center justify-between">
                                 <p className="text-titleGreen font-bold">
-                                    {categoryTyped.charAt(0).toUpperCase() + categoryTyped.slice(1)} {/* Capitalizamos el nombre de la categoría */}
-                                    <span className="font-normal"> ({registros[categoryTyped].descartado.length})</span> {/* Muestra la cantidad de registros descartados */}
+                                    {categoryTyped.charAt(0).toUpperCase() + categoryTyped.slice(1)}
+                                    <span className="font-normal"> ({registros[categoryTyped].descartado.length})</span>
                                 </p>
-                                <span className="transition-transform duration-300 transform"
-                                    onClick={() => toggleMenu(categoryTyped)}
-                                >
-                                    {isOpen ? <AiOutlineUp /> : <AiOutlineDown />} {/* Ícono de abrir/cerrar */}
+                                <span className="transition-transform duration-300 transform">
+                                    {openCategory === categoryTyped ? <AiOutlineUp /> : <AiOutlineDown />} {/* Ícono de abrir/cerrar */}
                                 </span>
                             </div>
 
-                            {/* Mostrar los registros de la categoría si está abierta */}
                             {openCategory === categoryTyped && (
-                                <div>
-                                    {/* Aquí enviamos los registros descartados de esa categoría a la tabla */}
+                                <div onClick={(e) => e.stopPropagation()}>
+                                    {/* Aquí enviamos los registros abiertos de esa categoría a la tabla */}
                                     <Table
                                         data={registros[categoryTyped].descartado}
                                     />

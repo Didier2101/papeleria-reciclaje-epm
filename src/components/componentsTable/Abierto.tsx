@@ -23,6 +23,7 @@ type Categorias = {
         abierto: Registro[];
         notificado: Registro[];
         descartado: Registro[];
+        rescatado: Registro[];
     };
 };
 

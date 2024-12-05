@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { TbKeyframeFilled } from "react-icons/tb";
 import { FaCheck, FaArrowRotateLeft } from "react-icons/fa6";
+import Pagination from "./Pagination";
 
 type Registro = {
     id: number;
@@ -17,6 +18,16 @@ type TableProps = {
 };
 
 export default function Table({ data }: TableProps) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+
+    const handlePageChange = (page: number, size: number) => {
+        setCurrentPage(page);
+        setPageSize(size);
+    };
+    // Filtrar registros según la página actual y el tamaño de página
+    const startIndex = (currentPage - 1) * pageSize;
+    const paginatedData = data.slice(startIndex, startIndex + pageSize);
 
     const [isChecked, setIsChecked] = useState(false);
 
@@ -73,7 +84,7 @@ export default function Table({ data }: TableProps) {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row) => (
+                        {paginatedData.map((row) => (
                             <tr key={row.id} className="hover:bg-gray-100 cursor-pointer border-b border-gray-200">
                                 <td className="text-center px-4 py-2">
                                     <input type="checkbox" className="bg-gray-300 rounded-md h-6 w-6 mt-1" />
@@ -92,6 +103,12 @@ export default function Table({ data }: TableProps) {
                     </tbody>
                 </table>
             </div>
+            {/* Componente de Paginación */}
+            <Pagination
+                totalRecords={data.length}
+                pageSizeOptions={[10, 20, 30]}
+                onPageChange={handlePageChange}
+            />
         </>
 
     );

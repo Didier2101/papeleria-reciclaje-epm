@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className='p-5'>
+      <div className='px-40'>
         <BrowserRouter>
           <Bienvenida />
           <Table />

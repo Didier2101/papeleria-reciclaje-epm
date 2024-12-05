@@ -23,15 +23,13 @@ type Categorias = {
         abierto: Registro[];
         notificado: Registro[];
         descartado: Registro[];
-        rescatado: Registro[]; // Agregar la categoría rescatado
+        rescatado: Registro[];
     };
 };
 
 export default function Rescatado() {
     // Estado para gestionar qué categoría está abierta
     const [openCategory, setOpenCategory] = useState<Categoria | null>(null);
-
-    // Función para manejar el clic en las categorías
     const [isOpen, setIsOpen] = useState(false);
 
     // Función para manejar el clic en las categorías
@@ -40,6 +38,7 @@ export default function Rescatado() {
         setOpenCategory(openCategory === category ? null : category);
         setIsOpen(!isOpen);
     };
+
     return (
         <div className="mt-1 w-full">
             <ul>
@@ -49,25 +48,23 @@ export default function Rescatado() {
                     return (
                         <li
                             key={categoryTyped}
-
-                            className="p-3 cursor-pointer border-2 border-gray-200 hover:bg-gray-100"
+                            // Al hacer clic, se alterna la categoría abierta
+                            onClick={() => toggleMenu(categoryTyped)}
+                            className={`${openCategory === categoryTyped ? "" : "hover:bg-gray-100  border-b-2"} p-3 `}
                         >
                             <div className="flex items-center justify-between">
                                 <p className="text-titleGreen font-bold">
-                                    {categoryTyped.charAt(0).toUpperCase() + categoryTyped.slice(1)} {/* Capitalizamos el nombre de la categoría */}
-                                    <span className="font-normal"> ({registros[categoryTyped].rescatado.length})</span> {/* Muestra la cantidad de registros rescatados */}
+                                    {categoryTyped.charAt(0).toUpperCase() + categoryTyped.slice(1)}
+                                    <span className="font-normal"> ({registros[categoryTyped].rescatado.length})</span>
                                 </p>
-                                <span className="transition-transform duration-300 transform"
-                                    onClick={() => toggleMenu(categoryTyped)}  // Al hacer clic, se alterna la categoría abierta
-                                >
-                                    {isOpen ? <AiOutlineUp /> : <AiOutlineDown />} {/* Ícono de abrir/cerrar */}
+                                <span className="transition-transform duration-300 transform">
+                                    {openCategory === categoryTyped ? <AiOutlineUp /> : <AiOutlineDown />} {/* Ícono de abrir/cerrar */}
                                 </span>
                             </div>
 
-                            {/* Mostrar los registros de la categoría si está abierta */}
                             {openCategory === categoryTyped && (
-                                <div>
-                                    {/* Aquí enviamos los registros rescatados de esa categoría a la tabla */}
+                                <div onClick={(e) => e.stopPropagation()}>
+                                    {/* Aquí enviamos los registros abiertos de esa categoría a la tabla */}
                                     <Table
                                         data={registros[categoryTyped].rescatado}
                                     />
