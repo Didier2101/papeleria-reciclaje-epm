@@ -5,27 +5,13 @@ import Table from "./Table"; // Asegúrate de tener el componente Table importad
 import { registros } from "../../assets/registros"; // Datos de registros
 
 // Definir el tipo para los registros
-type Registro = {
-    id: number;
-    nombre: string;
-    fechaEliminacion: string;
-    eliminadoPor: string;
-    creadoPor: string;
-    ubicacionOriginal: string;
-};
+
 
 // Definir las claves posibles para las categorías (tecnologia, contabilidad, etc.)
 type Categoria = "tecnologia" | "contabilidad"; // Ajusta según las categorías que tengas en tu objeto 'registros'
 
 // Definir la estructura de registros según las categorías
-type Categorias = {
-    [key in Categoria]: {
-        abierto: Registro[];
-        notificado: Registro[];
-        descartado: Registro[];
-        rescatado: Registro[];
-    };
-};
+
 
 export default function Notificado() {
     // Estado para gestionar qué categoría está abierta
